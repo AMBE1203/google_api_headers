@@ -41,18 +41,18 @@ class GoogleApiHeadersPlugin : MethodCallHandler, FlutterPlugin {
                     packageManager.getPackageInfo(
                         args,
                         PackageManager.GET_SIGNING_CERTIFICATES
-                    ).signingInfo.apkContentsSigners.forEach { signature ->
+                    )?.signingInfo?.apkContentsSigners?.forEach { signature ->
                         parseSignature(
                             signature,
                             result
                         )
-                    }
+                    } 
                 } else {
                     @Suppress("DEPRECATION")
                     packageManager.getPackageInfo(
                         args,
                         PackageManager.GET_SIGNATURES
-                    ).signatures.forEach { signature -> parseSignature(signature, result) }
+                    ).signatures?.forEach { signature -> parseSignature(signature, result) } ?: result.error("NO_SIGNATURE", "No signatures found in package info", null)
                 }
 
             } catch (e: Exception) {
